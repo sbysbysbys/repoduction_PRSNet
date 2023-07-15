@@ -109,7 +109,7 @@ for batch in test_dataloader:
         sample = torch.split(sample, 1, dim=0)
         cp = torch.split(cp, 1, dim=0)
         
-        # check
+        # 检查数据
         if check == 0:
             print("checking data......")
             print("p1 = ",p1[0])
@@ -141,8 +141,7 @@ for batch in test_dataloader:
             print("Lr_quat = ",Lr_quat)
             check=1
 
-        # double check
-        # save
+        # 评估并保存
         idx = 0
         for path_idx in range(len(data_path)):
             alter_plane = [1,1,1,1]

@@ -25,7 +25,7 @@ class SymmetryPlane:
     def sympoint(self,p):
         # print(p.size())
         # print(self.n)
-        sym_points = p - 2*(torch.dot(p,self.n)+self.d)*self.n_unit
+        sym_points = p - 2*(torch.dot(p,self.n)+self.d)/self.len * self.n_unit
         return sym_points
     
     # 对称点集
