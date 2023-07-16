@@ -231,8 +231,10 @@ def double_check(data,param_p1,param_p2,param_p3,param_q1,param_q2,param_q3):
         if alter_quat[i] == 1:
             if q[i-1].Lsd() > dc or q[i-1].La() > da:
                 alter_quat[i] = 0
+    
     print(p1.Lsd(),p2.Lsd(),p3.Lsd())
     print(q1.Lsd(),q2.Lsd(),q3.Lsd())
+    print("La = ",q1.La(),q2.La(),q3.La())
     print("alter_plane = ",alter_plane)
     print("alter_quat = ",alter_quat)
     

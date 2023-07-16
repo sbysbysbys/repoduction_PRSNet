@@ -109,7 +109,7 @@ class PRSNetLoss:
             config = yaml.safe_load(f)
         self.cfg_model = config["model"]
         self.wr = self.cfg_model["weight"]
-        self.wr_la = self.wr["weight_La"]
+        self.wr_la = self.cfg_model["weight_La"]
 
     def __call__(self, voxel,sample,cp, p1, p2, p3, q1, q2, q3):
         voxel = torch.split(voxel, 1, dim=0)
