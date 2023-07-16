@@ -1,6 +1,6 @@
 function [] = generateSurfacePlot()
     %generateSurface('..//results//compare//test_data_11.mat');
-    generateSurface('..//results//comparel//compare//test_data_14.mat');
+    generateSurface('..//results//comparel//compare//test_data_80.mat');
 end
 
 function generateSurface(tsdfFile)
