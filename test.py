@@ -134,11 +134,12 @@ for batch in test_dataloader:
             print("checking Lr......")
             print("Lr_plane = ",utils.LrPlane(sp1,sp2,sp3))
             print("Lr_quat = ",utils.LrQuat(sq1,sq2,sq3))
-            Lsd_plane, Lsd_quat, Lr_plane, Lr_quat = utils.losses(data, p1[0].squeeze(0), p2[0].squeeze(0), p3[0].squeeze(0), q1[0].squeeze(0), q2[0].squeeze(0), q3[0].squeeze(0))
+            Lsd_plane, Lsd_quat, Lr_plane, Lr_quat, La = utils.losses(data, p1[0].squeeze(0), p2[0].squeeze(0), p3[0].squeeze(0), q1[0].squeeze(0), q2[0].squeeze(0), q3[0].squeeze(0))
             print("Lsd_plane = ",Lsd_plane)
             print("Lsd_quat = ",Lsd_quat)
             print("Lr_plane = ",Lr_plane)
             print("Lr_quat = ",Lr_quat)
+            print("La = ",La)
             check=1
 
         # 评估并保存

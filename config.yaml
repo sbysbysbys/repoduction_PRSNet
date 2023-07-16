@@ -15,7 +15,9 @@ train:
 
 model:
   weight : 50
+  weight_La : 10
   dc : 20
+  da : 2
   min_angle : 30
 
 test:

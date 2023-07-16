@@ -69,6 +69,7 @@ class SymmetryQuat:
 
         self.quat = quat
         self.n = quat[1:4]
+        self.w = quat[0]
         self.len = torch.sqrt(torch.sum(self.n**2))
         self.n_unit = self.n/self.len
 
@@ -98,6 +99,10 @@ class SymmetryQuat:
         min_dises = min_distance(sympoints,in_voxels,self.cp)
         # print("min_dis = ",min_dises[500])
         return torch.sum(min_dises)
+    
+    def La(self):
+        return self.w**2/self.len**2
+        
     
 import torch
 
@@ -190,8 +195,9 @@ def losses(data,param_p1,param_p2,param_p3,param_q1,param_q2,param_q3):
     Lsd_quat = q1.Lsd() + q2.Lsd() + q3.Lsd()
     Lr_plane = LrPlane(p1,p2,p3)
     Lr_quat = LrQuat(q1,q2,q3)
+    La = q1.La() + q2.La() + q3.La()
 
-    return Lsd_plane,Lsd_quat,Lr_plane,Lr_quat
+    return Lsd_plane,Lsd_quat,Lr_plane,Lr_quat,La
 
 # 删除一些多余的结果
 def double_check(data,param_p1,param_p2,param_p3,param_q1,param_q2,param_q3):
@@ -203,6 +209,7 @@ def double_check(data,param_p1,param_p2,param_p3,param_q1,param_q2,param_q3):
         config = yaml.safe_load(f)
     cfg_model = config["model"]
     dc = cfg_model["dc"]
+    da = cfg_model["da"]
     # print("dc = ",dc)
     min_angle = cfg_model["min_angle"]
     # print("min_angle = ",min_angle)
@@ -222,7 +229,7 @@ def double_check(data,param_p1,param_p2,param_p3,param_q1,param_q2,param_q3):
             if p[i-1].Lsd() > dc:
                 alter_plane[i] = 0
         if alter_quat[i] == 1:
-            if q[i-1].Lsd() > dc:
+            if q[i-1].Lsd() > dc or q[i-1].La() > da:
                 alter_quat[i] = 0
     print(p1.Lsd(),p2.Lsd(),p3.Lsd())
     print(q1.Lsd(),q2.Lsd(),q3.Lsd())

@@ -109,6 +109,7 @@ class PRSNetLoss:
             config = yaml.safe_load(f)
         self.cfg_model = config["model"]
         self.wr = self.cfg_model["weight"]
+        self.wr_la = self.wr["weight_La"]
 
     def __call__(self, voxel,sample,cp, p1, p2, p3, q1, q2, q3):
         voxel = torch.split(voxel, 1, dim=0)
@@ -130,8 +131,8 @@ class PRSNetLoss:
         for i in range(len(voxel)):
             # print("batch_idx = ", i+1)
             data.append({"voxel": voxel[i].squeeze(0), "sample": sample[i].squeeze(0), "cp": cp[i].squeeze(0)})
-            Lsd_plane, Lsd_quat, Lr_plane, Lr_quat = utils.losses(data[i], p1[i].squeeze(0), p2[i].squeeze(0), p3[i].squeeze(0), q1[i].squeeze(0), q2[i].squeeze(0), q3[i].squeeze(0))
-            loss = Lsd_plane + Lsd_quat + (Lr_plane + Lr_quat) * self.wr
+            Lsd_plane, Lsd_quat, Lr_plane, Lr_quat, La = utils.losses(data[i], p1[i].squeeze(0), p2[i].squeeze(0), p3[i].squeeze(0), q1[i].squeeze(0), q2[i].squeeze(0), q3[i].squeeze(0))
+            loss = Lsd_plane + Lsd_quat + (Lr_plane + Lr_quat) * self.wr + La * self.wr_la
             losses.append(loss.unsqueeze(0))
 
         losses = torch.cat(losses, dim=0)
